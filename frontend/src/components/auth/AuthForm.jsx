@@ -88,7 +88,7 @@ export default function AuthForm() {
       )}
       <Card className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg shadow-lg p-6 bg-white relative">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
           className="absolute top-4 left-4 p-3 bg-gray-200 rounded-full text-gray-700 hover:bg-gray-300 focus:outline-none transition duration-300 ease-in-out"
         >
           <IoIosArrowBack size={24} />
@@ -228,7 +228,7 @@ export default function AuthForm() {
                 <label className="text-sm text-gray-700">
                   Я соглашаюсь с{" "}
                   <Link to="/terms" className="text-blue-500 underline">
-                    условиями использования PrepodPress
+                    условиями использования ПреподавательОнлайн
                   </Link>
                 </label>
               </div>
