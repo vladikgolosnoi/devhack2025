@@ -30,10 +30,8 @@ export default function Sites() {
     sectionTitle: "Добро пожаловать!",
     sectionDescription: "",
     sectionColor: "#ffffff",
-    itemsGrid: 2,
     itemStyle: "home",
-    collapsed: false,
-    locked: true,
+    collapsed: true,
     items: [
       {
         id: Date.now() + 1,
@@ -41,6 +39,7 @@ export default function Sites() {
         description: "Описание слогана и краткая информация.",
         image:
           "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
+        imageAlign: "left",
       },
     ],
   });
