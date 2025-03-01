@@ -1,0 +1,30 @@
+.block-editor-container,
+.block-preview-container {
+}
+
+@media (max-width: 375px) {
+  .block-editor-container {
+    padding: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 0.875rem;
+  }
+  .block-editor-container button {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+  .block-editor-container input,
+  .block-editor-container select {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+  .block-preview-container {
+    padding: 0.5rem !important;
+    font-size: 0.875rem;
+  }
+  .block-preview-container h2 {
+    font-size: 1.5rem;
+  }
+  .block-preview-container h3 {
+    font-size: 1.25rem;
+  }
+}
