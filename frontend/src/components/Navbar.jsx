@@ -253,7 +253,7 @@ export default function Navbar() {
                           <img
                             src={
                               user.avatar
-                                ? `${user.avatar}`
+                                ? `http://localhost:8000/${user.avatar}`
                                 : "/default-avatar.png"
                             }
                             alt="Профиль"
@@ -373,7 +373,7 @@ export default function Navbar() {
                           <img
                             src={
                               user.avatar
-                                ? `${user.avatar}`
+                                ? `http://localhost:8000/${user.avatar}`
                                 : "/default-avatar.png"
                             }
                             alt="Профиль"
