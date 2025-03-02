@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 const TextEditorModel = ({
   editorModal,
@@ -13,6 +13,30 @@ const TextEditorModel = ({
   showAlignDropdown,
   setShowAlignDropdown,
 }) => {
+  // Локальное состояние для временного содержания редактора.
+  const [tempContent, setTempContent] = useState(editorModal.initialValue || "");
+  const editorRef = useRef(null);
+
+  // При монтировании устанавливаем начальное содержимое редактора один раз.
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.innerHTML = editorModal.initialValue || "";
+    }
+  }, [editorModal.initialValue]);
+
+  // Обработчик ввода: обновляем tempContent, но не перезаписываем innerHTML.
+  const handleInput = (e) => {
+    setTempContent(e.currentTarget.innerHTML);
+  };
+
+  // Фокусировка редактора и выполнение команды.
+  const execCommandOnEditor = (command, value = null) => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+      document.execCommand(command, false, value);
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-auto">
       <div className="bg-white p-8 rounded shadow-lg w-11/12 max-w-2xl max-h-screen overflow-auto">
@@ -20,10 +44,7 @@ const TextEditorModel = ({
           <h3 className="text-xl font-bold">
             Редактировать {editorModal.field}
           </h3>
-          <button
-            onClick={handleCancelEditor}
-            className="text-gray-500 text-2xl"
-          >
+          <button onClick={handleCancelEditor} className="text-gray-500 text-2xl">
             &times;
           </button>
         </div>
@@ -44,42 +65,26 @@ const TextEditorModel = ({
             <div className="bg-gray-200 p-2 rounded mb-2">
               <div className="flex flex-wrap gap-2 mb-2">
                 <button
-                  onClick={() => {
-                    const editor = document.getElementById("editorContent");
-                    if (editor) editor.focus();
-                    document.execCommand("bold", false, null);
-                  }}
+                  onClick={() => execCommandOnEditor("bold")}
                   className="p-1 border rounded font-bold"
                 >
                   B
                 </button>
                 <button
-                  onClick={() => {
-                    const editor = document.getElementById("editorContent");
-                    if (editor) editor.focus();
-                    document.execCommand("italic", false, null);
-                  }}
+                  onClick={() => execCommandOnEditor("italic")}
                   className="p-1 border rounded italic"
                 >
                   I
                 </button>
                 <button
-                  onClick={() => {
-                    const editor = document.getElementById("editorContent");
-                    if (editor) editor.focus();
-                    document.execCommand("underline", false, null);
-                  }}
+                  onClick={() => execCommandOnEditor("underline")}
                   className="p-1 border rounded underline"
                 >
                   U
                 </button>
                 <select
                   className="p-1 border rounded"
-                  onChange={(e) => {
-                    const editor = document.getElementById("editorContent");
-                    if (editor) editor.focus();
-                    document.execCommand("fontSize", false, e.target.value);
-                  }}
+                  onChange={(e) => execCommandOnEditor("fontSize", e.target.value)}
                 >
                   <option value="">Размер шрифта</option>
                   <option value="1">Очень маленький</option>
@@ -92,11 +97,7 @@ const TextEditorModel = ({
                 </select>
                 <input
                   type="color"
-                  onChange={(e) => {
-                    const editor = document.getElementById("editorContent");
-                    if (editor) editor.focus();
-                    document.execCommand("foreColor", false, e.target.value);
-                  }}
+                  onChange={(e) => execCommandOnEditor("foreColor", e.target.value)}
                   className="h-8 w-8"
                 />
                 <button
@@ -151,10 +152,7 @@ const TextEditorModel = ({
                     <div className="absolute top-full left-0 bg-white border rounded shadow mt-1 z-10">
                       <button
                         onClick={() => {
-                          const editor =
-                            document.getElementById("editorContent");
-                          if (editor) editor.focus();
-                          document.execCommand("justifyLeft", false, null);
+                          execCommandOnEditor("justifyLeft");
                           setShowAlignDropdown(false);
                         }}
                         className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
@@ -163,10 +161,7 @@ const TextEditorModel = ({
                       </button>
                       <button
                         onClick={() => {
-                          const editor =
-                            document.getElementById("editorContent");
-                          if (editor) editor.focus();
-                          document.execCommand("justifyCenter", false, null);
+                          execCommandOnEditor("justifyCenter");
                           setShowAlignDropdown(false);
                         }}
                         className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
@@ -175,10 +170,7 @@ const TextEditorModel = ({
                       </button>
                       <button
                         onClick={() => {
-                          const editor =
-                            document.getElementById("editorContent");
-                          if (editor) editor.focus();
-                          document.execCommand("justifyRight", false, null);
+                          execCommandOnEditor("justifyRight");
                           setShowAlignDropdown(false);
                         }}
                         className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
@@ -190,20 +182,19 @@ const TextEditorModel = ({
                 </div>
               </div>
             </div>
+            {/* Здесь содержимое редактора устанавливается только один раз, а дальнейшие изменения управляются самим contentEditable */}
             <div
               id="editorContent"
               contentEditable
               className="border p-2 h-96 overflow-auto rounded bg-transparent"
-            >
-              <div
-                dangerouslySetInnerHTML={{ __html: editorModal.initialValue }}
-              />
-            </div>
+              ref={editorRef}
+              onInput={handleInput}
+            />
           </>
         )}
         <div className="flex justify-end mt-4 space-x-2">
           <button
-            onClick={handleSaveEditor}
+            onClick={() => handleSaveEditor(tempContent)}
             className="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600 transition"
           >
             Сохранить
