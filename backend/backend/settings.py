@@ -130,6 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [BASE_DIR / "dist"]
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -174,9 +177,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://lastingly-crucial-nuthatch.cloudpub.ru",
-    "https://flimsily-methodical-newt.cloudpub.ru"
+    "https://devayin.ru",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

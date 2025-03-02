@@ -4,3 +4,4 @@ drf-yasg~=1.21.9
 djangorestframework_simplejwt~=5.4.0
 social-auth-app-django
 pillow
+django-cors-headers
