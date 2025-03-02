@@ -14,7 +14,7 @@ schema_view = get_schema_view(
         description="Документация API для проекта Преподаватель Online",
     ),
     public=True,
-    permission_classes=[permissions.AllowAny,],
+    permission_classes=[permissions.AllowAny, ],
 )
 
 urlpatterns = [
@@ -25,7 +25,6 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
     path('api/notify/', include('notify.urls')),
-
 
     path('api/websites/', include('websites.urls')),
 

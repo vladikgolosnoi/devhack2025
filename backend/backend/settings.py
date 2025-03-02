@@ -175,7 +175,8 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://lastingly-crucial-nuthatch.cloudpub.ru"
+    "https://lastingly-crucial-nuthatch.cloudpub.ru",
+    "https://flimsily-methodical-newt.cloudpub.ru"
 ]
 
 CORS_ALLOW_CREDENTIALS = True

@@ -122,7 +122,7 @@ export default function ProfileUpdate() {
             "/default-avatar.png"
           }
           alt="Аватар"
-          className="w-32 h-32 rounded-full border-4 border-white shadow-xl mb-4"
+          className="w-32 h-32 rounded-full border-4 object-cover border-white shadow-xl mb-4"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 100 }}

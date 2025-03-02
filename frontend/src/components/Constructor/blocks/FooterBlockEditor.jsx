@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import "./Constructor.css";
 
+// Если у вас уже есть функция очистки HTML, можно её импортировать или определить здесь:
+const stripHtml = (html) => {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+};
+
 const FooterBlockEditor = ({
   block,
   onUpdateField,
@@ -27,24 +34,27 @@ const FooterBlockEditor = ({
 
   return (
     <div className="footer-block-editor p-6 mb-6 border rounded-lg shadow-lg bg-gradient-to-r from-green-50 to-white">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-green-700">Блок "Footer"</h2>
-        <div className="space-x-2">
+      {/* Верхняя панель управления */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+        <h2 className="text-2xl sm:text-2xl font-bold text-green-700 mb-2 sm:mb-0">
+          Блок "Footer"
+        </h2>
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto editor-bottom-bar">
           <button
             onClick={onMoveBlockUp}
-            className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+            className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
           >
             Вверх
           </button>
           <button
             onClick={onMoveBlockDown}
-            className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+            className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
           >
             Вниз
           </button>
           <button
             onClick={() => onRemoveBlock(block.id)}
-            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+            className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
           >
             Удалить
           </button>
@@ -52,7 +62,7 @@ const FooterBlockEditor = ({
             onClick={() =>
               onUpdateField(block.id, "collapsed", !block.collapsed)
             }
-            className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
+            className="w-full sm:w-auto px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
           >
             {block.collapsed ? "Открыть" : "Закрыть"}
           </button>
@@ -86,11 +96,13 @@ const FooterBlockEditor = ({
           </div>
 
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xl font-semibold">Текстовые элементы</h3>
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-2">
+              <h3 className="text-xl sm:text-xl font-semibold">
+                Текстовые элементы
+              </h3>
               <button
                 onClick={() => setElementsCollapsed(!elementsCollapsed)}
-                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
+                className="w-full sm:w-auto px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
               >
                 {elementsCollapsed ? "Развернуть" : "Свернуть"}
               </button>
@@ -122,13 +134,9 @@ const FooterBlockEditor = ({
                           type="color"
                           value={el.boxColor || "#ffffff"}
                           onChange={(e) =>
-                            onUpdateTextElement(
-                              el.id,
-                              "boxColor",
-                              e.target.value
-                            )
+                            onUpdateTextElement(el.id, "boxColor", e.target.value)
                           }
-                          className="w-16 h-16"
+                          className="w-16 h-16 rounded border"
                         />
                       </div>
                       <div className="mb-2 p-2 border rounded bg-gray-50">
@@ -138,22 +146,22 @@ const FooterBlockEditor = ({
                           }}
                         />
                       </div>
-                      <div className="flex justify-end space-x-2">
+                      <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
                         <button
                           onClick={() => onMoveTextElementUp(index)}
-                          className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+                          className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
                         >
                           Вверх
                         </button>
                         <button
                           onClick={() => onMoveTextElementDown(index)}
-                          className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+                          className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
                         >
                           Вниз
                         </button>
                         <button
                           onClick={() => onRemoveTextElement(el.id)}
-                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+                          className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
                         >
                           Удалить
                         </button>
@@ -171,12 +179,33 @@ const FooterBlockEditor = ({
             )}
           </div>
 
-          <div className="mt-6">
+          {/* Нижняя панель управления */}
+          <div className="editor-bottom-bar mt-6 border-t pt-4">
             <button
-              onClick={onAddTextElement}
-              className="w-full px-4 py-3 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
+              onClick={() => onMoveBlockUp(block.id)}
+              className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
             >
-              Добавить текстовый элемент
+              Вверх
+            </button>
+            <button
+              onClick={() => onMoveBlockDown(block.id)}
+              className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+            >
+              Вниз
+            </button>
+            <button
+              onClick={() => onRemoveBlock(block.id)}
+              className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+            >
+              Удалить
+            </button>
+            <button
+              onClick={() =>
+                onUpdateField(block.id, "collapsed", !block.collapsed)
+              }
+              className="w-full sm:w-auto px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
+            >
+              {block.collapsed ? "Открыть" : "Закрыть"}
             </button>
           </div>
         </>

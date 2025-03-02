@@ -35,6 +35,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
-        Profile.objects.create(user=user, middle_name=middle_name)
+        Profile.objects.create(user=user, middle_name=middle_name, avatar="avatars/i.webp")
+
         return user
+
 

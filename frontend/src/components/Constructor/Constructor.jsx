@@ -5,12 +5,33 @@ import HomeBlockEditor from "./blocks/HomeBlockEditor";
 import HomeBlockPreview from "./blocks/HomeBlockPreview";
 import FooterBlockEditor from "./blocks/FooterBlockEditor";
 import FooterBlockPreview from "./blocks/FooterBlockPreview";
+import ProjectsBlockEditor from "./blocks/ProjectsBlockEditor";
+import ProjectsBlockPreview from "./blocks/ProjectsBlockPreview";
+import ContactsBlockEditor from "./blocks/ContactsBlockEditor";
+import ContactsBlockPreview from "./blocks/ContactsBlockPreview";
+import PremiumContactsBlockEditor from "./blocks/PremiumContactsBlockEditor";
+import PremiumContactsBlockPreview from "./blocks/PremiumContactsBlockPreview";
 import TextEditorModel from "./TextEditorModel";
 import { getProfile } from "@/components/api/profile";
 
 function Constructor() {
   const { unique_id } = useParams();
 
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const profileData = await getProfile();
+        setIsPremium(profileData?.subscription === "premium");
+      } catch (error) {
+        console.error("Ошибка получения профиля:", error);
+      }
+    }
+    fetchProfile();
+  }, []);
+
+  // Дефолтный блок "Главная"
   const getDefaultHomeBlock = () => ({
     id: Date.now(),
     blockType: "home",
@@ -31,6 +52,7 @@ function Constructor() {
     ],
   });
 
+  // Дефолтный блок "Footer"
   const getDefaultFooterBlock = () => ({
     id: Date.now(),
     blockType: "footer",
@@ -43,6 +65,72 @@ function Constructor() {
         text: "Новый текстовый элемент",
         collapsed: false,
         boxColor: "#ffffff",
+      },
+    ],
+  });
+
+  // Дефолтный блок "Проекты"
+  const getDefaultProjectsBlock = () => ({
+    id: Date.now(),
+    blockType: "projects",
+    sectionTitle: "Наши проекты и награды",
+    sectionDescription:
+      "Здесь вы можете увидеть наши реализованные проекты и полученные награды.",
+    sectionColor: "#f5f5f5",
+    gridColumns: 2,
+    collapsed: false,
+    items: [
+      {
+        id: Date.now() + 1,
+        title: "Проект 1",
+        description: "Описание проекта 1",
+        image: "https://via.placeholder.com/300x200?text=Проект+1",
+        imageAlign: "top",
+        elementColor: "#ffffff",
+      },
+    ],
+  });
+
+  // Дефолтный блок "Контакты"
+  const getDefaultContactsBlock = () => ({
+    id: Date.now(),
+    blockType: "contacts",
+    sectionTitle: "Контакты",
+    sectionDescription: "Здесь вы можете указать ссылки на ваши контакты.",
+    sectionColor: "#e0f7fa",
+    gridColumns: 2,
+    collapsed: false,
+    items: [
+      {
+        id: Date.now() + 1,
+        title: "Email",
+        description: "contact@example.com",
+        link: "mailto:contact@example.com",
+        elementColor: "#ffffff",
+      },
+    ],
+  });
+
+  // Дефолтный блок "Премиум Контакты"
+  const getDefaultPremiumContactsBlock = () => ({
+    id: Date.now(),
+    blockType: "premiumContacts",
+    sectionTitle: "Премиум Контакты",
+    sectionDescription:
+      "Эксклюзивный блок контактов для премиум пользователей.",
+    gradientStart: "#ffd700",
+    gradientEnd: "#ffb700",
+    sectionColor: `linear-gradient(to right, #ffd700, #ffb700)`,
+    gridColumns: 2,
+    collapsed: false,
+    items: [
+      {
+        id: Date.now() + 1,
+        title: "VKONTAKTE",
+        description: "Ваш профиль VK",
+        link: "https://vk.com",
+        socialType: "vk",
+        elementColor: "#ffffff",
       },
     ],
   });
@@ -73,10 +161,9 @@ function Constructor() {
           setBlocks(testTemplate.blocks);
           setPageBackground(testTemplate.pageBackground);
         } else {
-          // Сохраняем также данные сайта, такие как name и site_type
           setWebsiteData({
-            name: data.name, // Берём name из API
-            site_type: data.site_type, // Берём site_type из API
+            name: data.name,
+            site_type: data.site_type,
           });
 
           let loadedBlocks = data.data.blocks || [];
@@ -106,7 +193,18 @@ function Constructor() {
       newBlock = getDefaultHomeBlock();
     } else if (selectedBlockType === "footer") {
       newBlock = getDefaultFooterBlock();
+    } else if (selectedBlockType === "projects") {
+      newBlock = getDefaultProjectsBlock();
+    } else if (selectedBlockType === "contacts") {
+      newBlock = getDefaultContactsBlock();
+    } else if (selectedBlockType === "premiumContacts") {
+      if (!isPremium) {
+        alert("Доступно только для премиум пользователей");
+        return;
+      }
+      newBlock = getDefaultPremiumContactsBlock();
     }
+
     if (newBlock) {
       setBlocks([...blocks, newBlock]);
     }
@@ -146,7 +244,7 @@ function Constructor() {
     setBlocks(blocks.filter((block) => block.id !== blockId));
   };
 
-  // Функции для работы с текстовыми элементами в блоке Footer
+  // Функции для работы с элементами в блоке Footer
   const addFooterTextElement = (blockId) => {
     const newTextElement = {
       id: Date.now(),
@@ -231,13 +329,268 @@ function Constructor() {
     );
   };
 
-  // Функция для обновления поля элемента в блоке "Главная"
+  // Функция для обновления элемента в блоке "Главная"
   const updateHomeItemField = (blockId, itemId, field, value) => {
     setBlocks(
       blocks.map((block) => {
         if (block.id === blockId && block.blockType === "home") {
           const newItems = block.items.map((item) =>
             item.id === itemId ? { ...item, [field]: value } : item
+          );
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  // Функции для работы с элементами в блоке "Проекты"
+  const addProjectElement = (blockId) => {
+    const newElement = {
+      id: Date.now(),
+      title: "Новый элемент",
+      description: "Описание нового элемента",
+      image: "",
+      imageAlign: "top",
+    };
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "projects") {
+          return { ...block, items: [...block.items, newElement] };
+        }
+        return block;
+      })
+    );
+  };
+
+  const moveProjectElementUp = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "projects" &&
+          index > 0
+        ) {
+          const newItems = [...block.items];
+          [newItems[index - 1], newItems[index]] = [
+            newItems[index],
+            newItems[index - 1],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const moveProjectElementDown = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "projects" &&
+          index < block.items.length - 1
+        ) {
+          const newItems = [...block.items];
+          [newItems[index], newItems[index + 1]] = [
+            newItems[index + 1],
+            newItems[index],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const removeProjectElement = (blockId, elementId) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "projects") {
+          const newItems = block.items.filter((el) => el.id !== elementId);
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const updateProjectElement = (blockId, elementId, field, value) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "projects") {
+          const newItems = block.items.map((el) =>
+            el.id === elementId ? { ...el, [field]: value } : el
+          );
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  // Функции для работы с элементами в блоке "Контакты"
+  const addContactElement = (blockId) => {
+    const newElement = {
+      id: Date.now(),
+      title: "Новый контакт",
+      description: "Описание контакта",
+      link: "",
+      elementColor: "#ffffff",
+    };
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "contacts") {
+          return { ...block, items: [...block.items, newElement] };
+        }
+        return block;
+      })
+    );
+  };
+
+  const moveContactElementUp = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "contacts" &&
+          index > 0
+        ) {
+          const newItems = [...block.items];
+          [newItems[index - 1], newItems[index]] = [
+            newItems[index],
+            newItems[index - 1],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const moveContactElementDown = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "contacts" &&
+          index < block.items.length - 1
+        ) {
+          const newItems = [...block.items];
+          [newItems[index], newItems[index + 1]] = [
+            newItems[index + 1],
+            newItems[index],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const removeContactElement = (blockId, elementId) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "contacts") {
+          const newItems = block.items.filter((el) => el.id !== elementId);
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const updateContactElement = (blockId, elementId, field, value) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "contacts") {
+          const newItems = block.items.map((el) =>
+            el.id === elementId ? { ...el, [field]: value } : el
+          );
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const addPremiumContactElement = (blockId) => {
+    const newElement = {
+      id: Date.now(),
+      title: "Новый контакт",
+      description: "Описание контакта",
+      link: "",
+      socialType: "vk",
+      elementColor: "#ffffff",
+    };
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "premiumContacts") {
+          return { ...block, items: [...block.items, newElement] };
+        }
+        return block;
+      })
+    );
+  };
+
+  const movePremiumContactElementUp = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "premiumContacts" &&
+          index > 0
+        ) {
+          const newItems = [...block.items];
+          [newItems[index - 1], newItems[index]] = [
+            newItems[index],
+            newItems[index - 1],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const movePremiumContactElementDown = (blockId, index) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (
+          block.id === blockId &&
+          block.blockType === "premiumContacts" &&
+          index < block.items.length - 1
+        ) {
+          const newItems = [...block.items];
+          [newItems[index], newItems[index + 1]] = [
+            newItems[index + 1],
+            newItems[index],
+          ];
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const removePremiumContactElement = (blockId, elementId) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "premiumContacts") {
+          const newItems = block.items.filter((el) => el.id !== elementId);
+          return { ...block, items: newItems };
+        }
+        return block;
+      })
+    );
+  };
+
+  const updatePremiumContactElement = (blockId, elementId, field, value) => {
+    setBlocks(
+      blocks.map((block) => {
+        if (block.id === blockId && block.blockType === "premiumContacts") {
+          const newItems = block.items.map((el) =>
+            el.id === elementId ? { ...el, [field]: value } : el
           );
           return { ...block, items: newItems };
         }
@@ -282,21 +635,40 @@ function Constructor() {
         if (block.id === editorModal.blockId) {
           if (editorModal.itemId) {
             if (block.blockType === "home") {
-              const newItems = block.items.map((item) => {
-                if (item.id === editorModal.itemId) {
-                  return { ...item, [editorModal.field]: newValue };
-                }
-                return item;
-              });
+              const newItems = block.items.map((item) =>
+                item.id === editorModal.itemId
+                  ? { ...item, [editorModal.field]: newValue }
+                  : item
+              );
               return { ...block, items: newItems };
             } else if (block.blockType === "footer") {
-              const newElements = block.textElements.map((el) => {
-                if (el.id === editorModal.itemId) {
-                  return { ...el, [editorModal.field]: newValue };
-                }
-                return el;
-              });
+              const newElements = block.textElements.map((el) =>
+                el.id === editorModal.itemId
+                  ? { ...el, [editorModal.field]: newValue }
+                  : el
+              );
               return { ...block, textElements: newElements };
+            } else if (block.blockType === "projects") {
+              const newItems = block.items.map((item) =>
+                item.id === editorModal.itemId
+                  ? { ...item, [editorModal.field]: newValue }
+                  : item
+              );
+              return { ...block, items: newItems };
+            } else if (block.blockType === "contacts") {
+              const newItems = block.items.map((item) =>
+                item.id === editorModal.itemId
+                  ? { ...item, [editorModal.field]: newValue }
+                  : item
+              );
+              return { ...block, items: newItems };
+            } else if (block.blockType === "premiumContacts") {
+              const newItems = block.items.map((item) =>
+                item.id === editorModal.itemId
+                  ? { ...item, [editorModal.field]: newValue }
+                  : item
+              );
+              return { ...block, items: newItems };
             }
           } else {
             return { ...block, [editorModal.field]: newValue };
@@ -398,6 +770,13 @@ function Constructor() {
           >
             <option value="home">Блок "Главная"</option>
             <option value="footer">Блок "Footer"</option>
+            <option value="projects">Блок "Проекты, Награды"</option>
+            <option value="contacts">Блок "Контакты"</option>
+            <option value="premiumContacts" disabled={!isPremium}>
+              {isPremium
+                ? "Премиум Контакты 👑"
+                : "Премиум Контакты (Premium Only)"}
+            </option>
           </select>
           <button
             onClick={handleAddBlock}
@@ -445,6 +824,81 @@ function Constructor() {
                 onOpenEditor={openEditor}
               />
             );
+          } else if (block.blockType === "projects") {
+            return (
+              <ProjectsBlockEditor
+                key={block.id}
+                block={block}
+                onUpdateField={updateBlockField}
+                onRemoveBlock={removeBlock}
+                onMoveBlockUp={() => moveBlockUp(index)}
+                onMoveBlockDown={() => moveBlockDown(index)}
+                onAddProjectElement={() => addProjectElement(block.id)}
+                onRemoveProjectElement={(elementId) =>
+                  removeProjectElement(block.id, elementId)
+                }
+                onMoveProjectElementUp={(index) =>
+                  moveProjectElementUp(block.id, index)
+                }
+                onMoveProjectElementDown={(index) =>
+                  moveProjectElementDown(block.id, index)
+                }
+                onUpdateProjectElement={(elementId, field, value) =>
+                  updateProjectElement(block.id, elementId, field, value)
+                }
+                onOpenEditor={openEditor}
+              />
+            );
+          } else if (block.blockType === "contacts") {
+            return (
+              <ContactsBlockEditor
+                key={block.id}
+                block={block}
+                onUpdateField={updateBlockField}
+                onRemoveBlock={removeBlock}
+                onMoveBlockUp={() => moveBlockUp(index)}
+                onMoveBlockDown={() => moveBlockDown(index)}
+                onAddProjectElement={() => addContactElement(block.id)}
+                onRemoveProjectElement={(elementId) =>
+                  removeContactElement(block.id, elementId)
+                }
+                onMoveProjectElementUp={(index) =>
+                  moveContactElementUp(block.id, index)
+                }
+                onMoveProjectElementDown={(index) =>
+                  moveContactElementDown(block.id, index)
+                }
+                onUpdateProjectElement={(elementId, field, value) =>
+                  updateContactElement(block.id, elementId, field, value)
+                }
+                onOpenEditor={openEditor}
+              />
+            );
+          } else if (block.blockType === "premiumContacts") {
+            return (
+              <PremiumContactsBlockEditor
+                key={block.id}
+                block={block}
+                onUpdateField={updateBlockField}
+                onRemoveBlock={removeBlock}
+                onMoveBlockUp={() => moveBlockUp(index)}
+                onMoveBlockDown={() => moveBlockDown(index)}
+                onAddProjectElement={() => addPremiumContactElement(block.id)}
+                onRemoveProjectElement={(elementId) =>
+                  removePremiumContactElement(block.id, elementId)
+                }
+                onMoveProjectElementUp={(index) =>
+                  movePremiumContactElementUp(block.id, index)
+                }
+                onMoveProjectElementDown={(index) =>
+                  movePremiumContactElementDown(block.id, index)
+                }
+                onUpdateProjectElement={(elementId, field, value) =>
+                  updatePremiumContactElement(block.id, elementId, field, value)
+                }
+                onOpenEditor={openEditor}
+              />
+            );
           }
           return null;
         })}
@@ -458,7 +912,7 @@ function Constructor() {
         </div>
       </aside>
 
-      {/* Правая панель – превью */}
+      {/* Правая панель – предпросмотр */}
       <main
         className="col-span-1 p-8 overflow-y-auto"
         style={{ backgroundColor: pageBackground, minHeight: "100vh" }}
@@ -468,6 +922,12 @@ function Constructor() {
             return <HomeBlockPreview key={block.id} block={block} />;
           } else if (block.blockType === "footer") {
             return <FooterBlockPreview key={block.id} block={block} />;
+          } else if (block.blockType === "projects") {
+            return <ProjectsBlockPreview key={block.id} block={block} />;
+          } else if (block.blockType === "contacts") {
+            return <ContactsBlockPreview key={block.id} block={block} />;
+          } else if (block.blockType === "premiumContacts") {
+            return <PremiumContactsBlockPreview key={block.id} block={block} />;
           }
           return null;
         })}

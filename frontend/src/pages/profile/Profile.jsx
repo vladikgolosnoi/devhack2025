@@ -103,7 +103,7 @@ export default function Profile() {
                 : "/default-avatar.png"
             }
             alt="Аватар"
-            className="w-32 h-32 rounded-full border-4 border-white shadow-2xl mb-4 sm:mb-0 sm:mr-6"
+            className="w-32 h-32 object-cover rounded-full border-4 border-white shadow-2xl mb-4 sm:mb-0 sm:mr-6"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           />

@@ -7,7 +7,7 @@ class Profile(models.Model):
     age = models.PositiveIntegerField(null=True, blank=True)
     profession = models.CharField(max_length=255, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
-    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True, default="/media/avatars/i.webp")
 
     SUBSCRIPTION_CHOICES = (
          ('free', 'Free'),
@@ -20,3 +20,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.last_name} {self.user.first_name} {self.middle_name}"
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        return "/media/avatars/i.webp"

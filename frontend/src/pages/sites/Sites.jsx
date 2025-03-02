@@ -11,6 +11,161 @@ import { getProfile } from "@/components/api/profile";
 import AlertMessage from "@/components/ui/AlertMessage";
 import { FaEye, FaCrown } from "react-icons/fa";
 
+// JSON-шаблон для minimalism
+const getDefaultMinimalismData = () => ({
+  pageBackground: "#ffffff",
+  blocks: [
+    {
+      id: 1740855089316,
+      blockType: "home",
+      sectionTitle:
+        '<div><div><div><div><font color="#00aaff">Добро пожаловать!</font></div></div></div></div>',
+      sectionDescription:
+        '<div><div><div><font color="#3297c3"><i>Описание здесь, если нужно.</i></font><div></div></div></div></div>',
+      sectionColor: "#cde2fe",
+      itemStyle: "home",
+      collapsed: true,
+      items: [
+        {
+          id: 1740855089317,
+          title:
+            '<div><div><font size="6" color="#0084ff">Учитель информатики</font></div></div>',
+          description:
+            '<div><div><div><div><div><font size="2" color="#0008ff">Описание слогана и краткая информация.</font></div></div></div></div></div>',
+          image:
+            "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
+          imageAlign: "right",
+        },
+      ],
+    },
+    {
+      id: 1740855141287,
+      blockType: "projects",
+      sectionTitle: "<div>Мои проекты</div>",
+      sectionDescription:
+        "Это мои проекты, который я разрабатывал самостоятельно.",
+      sectionColor: "#ffc2c2",
+      gridColumns: 2,
+      collapsed: true,
+      items: [
+        {
+          id: 1740855141288,
+          title:
+            '<div style="text-align: center;">Python Pro: Полный курс по современному Python</div>',
+          description:
+            "<div>Этот курс рассчитан на разработчиков любого уровня, которые хотят освоить Python с нуля или углубить свои знания. В программе рассматриваются основы языка, ООП, работа с файлами, базы данных, веб-разработка (Flask, Django), асинхронность (asyncio), работа с API и создание телеграм-ботов. Завершается курс созданием собственного проекта – веб-приложения или телеграм-бота с использованием Django и DRF.</div>",
+          image:
+            "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
+          imageAlign: "top",
+          elementColor: "#ffe0e0",
+        },
+        {
+          id: 1740855396399,
+          title:
+            '<div><div style="text-align: center;"><span style="color: rgb(10, 10, 10); background-color: transparent;">Java Pro: От основ до Spring Boot</span></div></div>',
+          description:
+            "<div>Полный курс по Java, охватывающий все ключевые темы: синтаксис, ООП, коллекции, многопоточное программирование, работа с БД (JDBC, Hibernate), создание REST API на Spring Boot. Также в курсе рассматриваются интеграция с фронтендом, деплой на сервер и работа с Docker/Kubernetes. В конце курса студенты разрабатывают реальный проект – веб-приложение на Spring Boot с авторизацией и взаимодействием с базой данных.</div>",
+          image:
+            "https://avatars.mds.yandex.net/i?id=6ecebd0e43e18beacb91905449b50f6b_l-5323018-images-thumbs&n=13",
+          imageAlign: "top",
+          elementColor: "#ffe0e0",
+        },
+      ],
+    },
+    {
+      id: 1740855846666,
+      blockType: "projects",
+      sectionTitle: "<div>Мои награды</div>",
+      sectionDescription: "<br>",
+      sectionColor: "#f5f5f5",
+      gridColumns: 1,
+      collapsed: true,
+      items: [
+        {
+          id: 1740855846667,
+          title:
+            '🏆 <strong data-start="91" data-end="150">Python Pro: Лауреат премии "Лучший курс по Python 2025"</strong>',
+          description:
+            '<p data-start="153" data-end="371">Этот курс был признан лучшим среди образовательных программ по Python в 2025 году! Он разработан для начинающих и продвинутых пользователей, которые хотят освоить Python и создать полноценные проекты.</p><p data-start="373" data-end="700"></p>',
+          image:
+            "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
+          imageAlign: "top",
+          elementColor: "#ffffff",
+        },
+      ],
+    },
+    {
+      id: 1740855842234,
+      blockType: "contacts",
+      sectionTitle: "<div>Мои контакты</div>",
+      sectionDescription:
+        '<div><div>Если у вас есть вопросы, можете писать мне!</div></div>',
+      sectionColor: "#cce9ff",
+      gridColumns: 3,
+      collapsed: true,
+      items: [
+        {
+          id: 1740855842235,
+          title: "Email",
+          description:
+            '<div><div><div><font size="2">Можете написать мне по почте!</font></div></div></div>',
+          link: '<div>mailto:contact@example.com</div>',
+          elementColor: "#d7e8fe",
+        },
+        {
+          id: 1740856055746,
+          title: "Телефон",
+          description: "+7 (123) 456 78-90",
+          link: "",
+          elementColor: "#d7e8fe",
+        },
+        {
+          id: 1740856063689,
+          title: "MAIL.RU",
+          description: "Можете писать в любое время.",
+          link: '<span style="color: rgb(10, 10, 10);">mailto:contact@example.com</span><div></div>',
+          elementColor: "#d7e8fe",
+        },
+      ],
+    },
+    {
+      id: 1740857628612,
+      blockType: "footer",
+      collapsed: true,
+      footerBackground: "#ffffff",
+      gridColumns: 1,
+      textElements: [
+        {
+          id: 1740857628613,
+          text: '<div><div style="text-align: center;"><b>© 2025 Преподаватель Online. Все права защищены.</b></div></div>',
+          collapsed: false,
+          boxColor: "#ffffff",
+        },
+      ],
+    },
+  ],
+});
+
+const getDefaultHomeBlock = () => ({
+  id: Date.now(),
+  blockType: "home",
+  sectionTitle: "Добро пожаловать!",
+  sectionDescription: "",
+  sectionColor: "#ffffff",
+  itemStyle: "home",
+  collapsed: true,
+  items: [
+    {
+      id: Date.now() + 1,
+      title: "Профессия",
+      description: "Описание слогана и краткая информация.",
+      image:
+        "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
+      imageAlign: "left",
+    },
+  ],
+});
+
 export default function Sites() {
   const [sites, setSites] = useState([]);
   const [maxSites, setMaxSites] = useState(3);
@@ -23,26 +178,6 @@ export default function Sites() {
   const [alert, setAlert] = useState(null);
   const [isPremium, setIsPremium] = useState(false);
   const navigate = useNavigate();
-
-  const getDefaultHomeBlock = () => ({
-    id: Date.now(),
-    blockType: "home",
-    sectionTitle: "Добро пожаловать!",
-    sectionDescription: "",
-    sectionColor: "#ffffff",
-    itemStyle: "home",
-    collapsed: true,
-    items: [
-      {
-        id: Date.now() + 1,
-        title: "Профессия",
-        description: "Описание слогана и краткая информация.",
-        image:
-          "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
-        imageAlign: "left",
-      },
-    ],
-  });
 
   useEffect(() => {
     loadSites();
@@ -81,12 +216,21 @@ export default function Sites() {
 
   const handleCreateSite = async () => {
     if (sites.length >= maxSites) return;
-    const defaultHomeBlock = getDefaultHomeBlock();
-    const payload = {
-      name: siteName,
-      site_type: siteType,
-      data: { pageBackground: "#ffffff", blocks: [defaultHomeBlock] },
-    };
+    let payload;
+    if (siteType === "minimalism") {
+      payload = {
+        name: siteName,
+        site_type: siteType,
+        data: getDefaultMinimalismData(),
+      };
+    } else {
+      const defaultHomeBlock = getDefaultHomeBlock();
+      payload = {
+        name: siteName,
+        site_type: siteType,
+        data: { pageBackground: "#ffffff", blocks: [defaultHomeBlock] },
+      };
+    }
     try {
       const newSite = await createWebsite(payload);
       setSites([...sites, newSite]);
@@ -108,14 +252,13 @@ export default function Sites() {
 
   const handleEditSite = (site) => {
     if (site.site_type === "minimalism") {
-      navigate("/coding");
+      navigate(`/constructor/${site.unique_id}`);
     } else {
       navigate(`/constructor/${site.unique_id}`);
     }
   };
 
   const handleCopyLink = (site) => {
-    // Формируем ссылку с базовым доменом
     const link = `${window.location.origin}/${username}/${site.unique_id}`;
     setCopyLinkValue(link);
     setCopyLinkModal(true);
@@ -131,12 +274,10 @@ export default function Sites() {
   };
 
   const handleViewSite = (site) => {
-    // Формируем ссылку с базовым доменом
     const link = `${window.location.origin}/${username}/${site.unique_id}`;
     window.open(link, "_blank");
   };
 
-  // Функция для переключения статуса публикации сайта (только для премиум-пользователей)
   const handleTogglePublishSite = async (site) => {
     if (!isPremium) return;
     try {
@@ -173,7 +314,7 @@ export default function Sites() {
 
   const progressMessage =
     sites.length >= maxSites ? (
-      <span className="text-red-500">
+      <span className="text-red-100">
         Максимум сайтов для вашей подписки достигнут
       </span>
     ) : (
@@ -184,16 +325,19 @@ export default function Sites() {
 
   return (
     <div className="min-h-screen py-16 px-4 sm:px-8">
-      {/* Контейнер для уведомления, расположенный сверху по центру */}
+      {/* Уведомление по центру экрана */}
       {alert && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-          <AlertMessage
-            type={alert.type}
-            message={alert.message}
-            onClose={() => setAlert(null)}
-          />
+        <div className="fixed inset-0 flex items-center justify-center z-50 px-4 pointer-events-none">
+          <div className="max-w-sm w-full pointer-events-auto">
+            <AlertMessage
+              type={alert.type}
+              message={alert.message}
+              onClose={() => setAlert(null)}
+            />
+          </div>
         </div>
       )}
+
       <div className="max-w-5xl mx-auto">
         {/* Заголовок и прогресс-бар */}
         <motion.div
@@ -262,10 +406,10 @@ export default function Sites() {
               }`}
             >
               <div className="mb-3">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  {site.name}
-                </h2>
-                <p className="text-sm text-gray-500">{`${username}/${site.unique_id}`}</p>
+                <h2 className="text-2xl font-bold text-gray-800">{site.name}</h2>
+                <p className="text-sm text-gray-500">
+                  {`${username}/${site.unique_id}`}
+                </p>
               </div>
               {/* Отображение количества просмотров */}
               <div className="flex items-center text-sm text-gray-600 mb-4">

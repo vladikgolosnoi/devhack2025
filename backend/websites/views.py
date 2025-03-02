@@ -1,4 +1,4 @@
-import uuid
+from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics, permissions, serializers, status
 from rest_framework.views import APIView
 from drf_yasg import openapi
@@ -7,7 +7,7 @@ from .models import Website
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .serializers import WebsiteSerializer
-
+import uuid
 
 class WebsitePublishToggleView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -30,9 +30,8 @@ class WebsitePublishToggleView(APIView):
         serializer = WebsiteSerializer(website)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 class UserPublishedWebsitesView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -62,10 +61,8 @@ class UserPublishedWebsitesView(APIView):
         serializer = WebsiteSerializer(websites, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
 class WebsiteViewTrackingView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
     def post(self, request, username, unique_id, *args, **kwargs):
         website = Website.objects.filter(owner__username=username, unique_id=unique_id).first()
@@ -81,7 +78,6 @@ class WebsiteViewTrackingView(APIView):
                 {"detail": "Сайт не найден"},
                 status=status.HTTP_404_NOT_FOUND
             )
-
 
 class WebsiteListCreateView(generics.ListCreateAPIView):
     serializer_class = WebsiteSerializer
@@ -100,7 +96,6 @@ class WebsiteListCreateView(generics.ListCreateAPIView):
         unique_id = uuid.uuid4().hex[:8]
         serializer.save(owner=user, unique_id=unique_id)
 
-
 class WebsiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = WebsiteSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -109,8 +104,8 @@ class WebsiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Website.objects.filter(owner=self.request.user)
 
-
-class WebsiteSharedRetrieveView(generics.RetrieveAPIView):
+# Публичное view для просмотра сайта
+class WebsiteSharedRetrieveView(RetrieveAPIView):
     serializer_class = WebsiteSerializer
     permission_classes = [AllowAny]
     lookup_field = 'unique_id'

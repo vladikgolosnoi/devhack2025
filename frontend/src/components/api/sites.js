@@ -9,16 +9,17 @@ export async function createWebsite(data) {
 }
 
 export async function getWebsite(username, unique_id) {
-  return apiRequest(`/websites/${username}/${unique_id}/`);
+  return apiRequest(`/websites/manage/${username}/${unique_id}/`);
 }
 
 export async function updateWebsite(username, unique_id, data) {
-  return apiRequest(`/websites/${username}/${unique_id}/`, "PUT", data);
+  return apiRequest(`/websites/manage/${username}/${unique_id}/`, "PUT", data);
 }
 
 export async function deleteWebsite(username, unique_id) {
-  return apiRequest(`/websites/${username}/${unique_id}/`, "DELETE");
+  return apiRequest(`/websites/manage/${username}/${unique_id}/`, "DELETE");
 }
+
 export async function getSharedWebsite(username, unique_id) {
   return apiRequest(`/websites/${username}/${unique_id}/`);
 }

@@ -7,6 +7,9 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import HomeBlockPreview from "@/components/Constructor/blocks/HomeBlockPreview";
 import FooterBlockPreview from "@/components/Constructor/blocks/FooterBlockPreview";
+import ContactsBlockPreview from "@/components/Constructor/blocks/ContactsBlockPreview";
+import ProjectsBlockPreview from "@/components/Constructor/blocks/ProjectsBlockPreview";
+import PremiumContactsBlockPreview from "@/components/Constructor/blocks/PremiumContactsBlockPreview";
 
 function Shared() {
   const { username, unique_id } = useParams();
@@ -19,11 +22,8 @@ function Shared() {
     async function loadWebsite() {
       try {
         let data;
-        if (username) {
-          data = await getSharedWebsite(username, unique_id);
-        } else {
-          data = await getWebsite(unique_id);
-        }
+        data = await getSharedWebsite(username, unique_id);
+        console.log(data, data.data, Object.keys(data.data).length);
         if (!data || !data.data || Object.keys(data.data).length === 0) {
           navigate("/404");
           return;
@@ -63,6 +63,12 @@ function Shared() {
           return <HomeBlockPreview key={block.id} block={block} />;
         } else if (block.blockType === "footer") {
           return <FooterBlockPreview key={block.id} block={block} />;
+        } else if (block.blockType === "contacts") {
+          return <ContactsBlockPreview key={block.id} block={block} />;
+        } else if (block.blockType === "projects") {
+          return <ProjectsBlockPreview key={block.id} block={block} />;
+        } else if (block.blockType === "premiumContacts") {
+          return <PremiumContactsBlockPreview key={block.id} block={block} />;
         }
         return null;
       })}

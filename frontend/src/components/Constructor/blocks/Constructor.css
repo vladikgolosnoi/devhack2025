@@ -1,8 +1,57 @@
+/* Базовые стили для контейнеров редактора и предпросмотра */
 .block-editor-container,
 .block-preview-container {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }
 
-@media (max-width: 375px) {
+.block-editor-container button,
+.block-preview-container button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.block-editor-container input,
+.block-editor-container select {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.block-preview-container h2 {
+  font-size: 2rem;
+}
+
+.block-preview-container h3 {
+  font-size: 1.5rem;
+}
+
+.editor-bottom-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+.editor-bottom-bar button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .editor-bottom-bar button {
+    width: auto;
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+  }
+  .editor-bottom-bar {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 1300px) {
   .block-editor-container {
     padding: 0.5rem !important;
     margin-bottom: 0.5rem !important;
@@ -28,3 +77,31 @@
     font-size: 1.25rem;
   }
 }
+
+@media (max-width: 1300px) {
+  .block-preview-container .grid {
+    grid-template-columns: 1fr !important;
+  }
+  .editor-bottom-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .editor-bottom-bar button {
+    width: 100%;
+  }
+  .projects-block-editor {
+    padding: 1rem;
+  }
+  .projects-block-editor h2 {
+    font-size: 1.5rem;
+  }
+  .projects-block-editor h3 {
+    font-size: 1.25rem;
+  }
+  .projects-block-editor button {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+

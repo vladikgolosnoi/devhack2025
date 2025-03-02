@@ -77,32 +77,19 @@ export default function App() {
 
           <Route path="/:username/:unique_id" element={<Shared />} />
 
-          {/* Маршрут конструктора сайта визитки (доступ только для зарегистрированных) */}
-          <Route
-            path="/constructor"
-            element={
-              localStorage.getItem("access_token") ? (
-                <WithNavbar>
-                  <Constructor />
-                </WithNavbar>
-              ) : (
-                <Navigate to="/auth" />
-              )
-            }
-          />
           {/* Редактирование конструктора по уникальному идентификатору (тоже только для зарегистрированных) */}
           <Route
-            path="/constructor/:unique_id"
-            element={
-              localStorage.getItem("access_token") ? (
-                <WithNavbar>
-                  <Constructor />
-                </WithNavbar>
-              ) : (
-                <Navigate to="/auth" />
-              )
-            }
-          />
+  path="/constructor/:unique_id"
+  element={
+    localStorage.getItem("access_token") ? (
+      <WithNavbar>
+        <Constructor key={window.location.pathname} />
+      </WithNavbar>
+    ) : (
+      <Navigate to="/auth" />
+    )
+  }
+/>
 
           {/* Маршрут для сайтов (только для зарегистрированных) */}
           <Route

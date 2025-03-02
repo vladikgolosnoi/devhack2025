@@ -23,10 +23,10 @@ export default function PremiumComparison() {
     {
       feature: "Публикация сайтов",
       free: "Да (Ссылка)",
-      premium: "Да (Профиль, Ссылка)",
+      premium: "Да (Профиль)",
     },
     {
-      feature: "Оформление комментариев и рейтинга",
+      feature: "Оформление комментариев",
       free: "Базовый",
       premium: "Особое",
     },
