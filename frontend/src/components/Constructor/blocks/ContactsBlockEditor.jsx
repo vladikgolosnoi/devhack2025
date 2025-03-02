@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Constructor.css";
 
-// Функция для очистки HTML, как в примере
+// Если у вас уже есть функция очистки HTML, можно её импортировать или определить здесь:
 const stripHtml = (html) => {
   const div = document.createElement("div");
   div.innerHTML = html;
   return div.textContent || div.innerText || "";
 };
 
-const PremiumContactsBlockEditor = ({
+const ContactsBlockEditor = ({
   block,
   onUpdateField,
   onRemoveBlock,
   onMoveBlockUp,
   onMoveBlockDown,
-  onAddProjectElement, // переиспользуется для добавления контакта
-  onRemoveProjectElement,
+  onAddProjectElement, // переиспользуем для добавления нового контакта
+  onRemoveProjectElement, // аналогичная логика удаления
   onMoveProjectElementUp,
   onMoveProjectElementDown,
   onUpdateProjectElement,
@@ -24,67 +24,35 @@ const PremiumContactsBlockEditor = ({
   const contactElements = block.items || [];
   const [elementsCollapsed, setElementsCollapsed] = useState(false);
 
-  // Локальное состояние для градиента
-  const [localGradientStart, setLocalGradientStart] = useState(block.gradientStart || "#ffd700");
-  const [localGradientEnd, setLocalGradientEnd] = useState(block.gradientEnd || "#ffb700");
-
-  useEffect(() => {
-    // При изменении градиента обновляем поля блока
-    if (
-      block.gradientStart !== localGradientStart ||
-      block.gradientEnd !== localGradientEnd
-    ) {
-      onUpdateField(block.id, "gradientStart", localGradientStart);
-      onUpdateField(block.id, "gradientEnd", localGradientEnd);
-      onUpdateField(
-        block.id,
-        "sectionColor",
-        `linear-gradient(to right, ${localGradientStart}, ${localGradientEnd})`
-      );
-    }
-  }, [localGradientStart, localGradientEnd, block, onUpdateField]);
-
-  const handleGradientStartChange = (e) => {
-    setLocalGradientStart(e.target.value);
-  };
-
-  const handleGradientEndChange = (e) => {
-    setLocalGradientEnd(e.target.value);
-  };
-
-  const handleGridColumnsChange = (e) => {
-    onUpdateField(block.id, "gridColumns", Number(e.target.value));
-  };
-
   return (
     <div className="contacts-block-editor p-6 mb-6 border rounded-lg shadow-lg bg-gradient-to-r from-purple-50 to-white">
       {/* Верхняя панель управления */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-purple-700 mb-2 sm:mb-0">
-          Премиум Контакты
-        </h2>
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto editor-bottom-bar">
+      <div className="flex flex-wrap justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-purple-700">Блок "Контакты"</h2>
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto editor-bottom-bar ">
           <button
             onClick={() => onMoveBlockUp(block.id)}
-            className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+            className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
           >
             Вверх
           </button>
           <button
             onClick={() => onMoveBlockDown(block.id)}
-            className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+            className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
           >
             Вниз
           </button>
           <button
             onClick={() => onRemoveBlock(block.id)}
-            className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
           >
             Удалить
           </button>
           <button
-            onClick={() => onUpdateField(block.id, "collapsed", !block.collapsed)}
-            className="w-full sm:w-auto px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
+            onClick={() =>
+              onUpdateField(block.id, "collapsed", !block.collapsed)
+            }
+            className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
           >
             {block.collapsed ? "Открыть" : "Закрыть"}
           </button>
@@ -98,7 +66,9 @@ const PremiumContactsBlockEditor = ({
             <div className="flex flex-wrap items-center justify-between">
               <span className="font-medium text-lg">Заголовок секции:</span>
               <button
-                onClick={() => onOpenEditor(block.id, "sectionTitle", block.sectionTitle)}
+                onClick={() =>
+                  onOpenEditor(block.id, "sectionTitle", block.sectionTitle)
+                }
                 className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition text-sm"
               >
                 Редактировать
@@ -106,7 +76,9 @@ const PremiumContactsBlockEditor = ({
             </div>
             <div
               className="mt-1 p-2 border rounded bg-white"
-              dangerouslySetInnerHTML={{ __html: block.sectionTitle || "Не указано" }}
+              dangerouslySetInnerHTML={{
+                __html: block.sectionTitle || "Не указано",
+              }}
             />
           </div>
 
@@ -116,7 +88,11 @@ const PremiumContactsBlockEditor = ({
               <span className="font-medium text-lg">Описание секции:</span>
               <button
                 onClick={() =>
-                  onOpenEditor(block.id, "sectionDescription", block.sectionDescription)
+                  onOpenEditor(
+                    block.id,
+                    "sectionDescription",
+                    block.sectionDescription
+                  )
                 }
                 className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition text-sm"
               >
@@ -125,29 +101,25 @@ const PremiumContactsBlockEditor = ({
             </div>
             <div
               className="mt-1 p-2 border rounded bg-white"
-              dangerouslySetInnerHTML={{ __html: block.sectionDescription || "Не указано" }}
+              dangerouslySetInnerHTML={{
+                __html: block.sectionDescription || "Не указано",
+              }}
             />
           </div>
 
-          {/* Редактирование градиентного фона секции */}
+          {/* Изменение цвета секции */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">
-              Градиентный фон секции:
+              Фон секции:
             </label>
-            <div className="flex space-x-2">
-              <input
-                type="color"
-                value={localGradientStart}
-                onChange={handleGradientStartChange}
-                className="w-16 h-16 rounded border"
-              />
-              <input
-                type="color"
-                value={localGradientEnd}
-                onChange={handleGradientEndChange}
-                className="w-16 h-16 rounded border"
-              />
-            </div>
+            <input
+              type="color"
+              value={block.sectionColor}
+              onChange={(e) =>
+                onUpdateField(block.id, "sectionColor", e.target.value)
+              }
+              className="w-full h-12 rounded border"
+            />
           </div>
 
           {/* Количество колонок */}
@@ -160,7 +132,9 @@ const PremiumContactsBlockEditor = ({
               min="1"
               max="4"
               value={block.gridColumns || 1}
-              onChange={handleGridColumnsChange}
+              onChange={(e) =>
+                onUpdateField(block.id, "gridColumns", Number(e.target.value))
+              }
               className="w-full px-2 py-1 border rounded"
             />
           </div>
@@ -171,7 +145,7 @@ const PremiumContactsBlockEditor = ({
               <h3 className="text-xl font-semibold">Контактные данные</h3>
               <button
                 onClick={() => setElementsCollapsed(!elementsCollapsed)}
-                className="w-full sm:w-auto px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
+                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
               >
                 {elementsCollapsed ? "Развернуть" : "Свернуть"}
               </button>
@@ -199,7 +173,9 @@ const PremiumContactsBlockEditor = ({
                       </div>
                       <div
                         className="mb-2 p-2 border rounded bg-gray-50"
-                        dangerouslySetInnerHTML={{ __html: el.title || "Не указано" }}
+                        dangerouslySetInnerHTML={{
+                          __html: el.title || "Не указано",
+                        }}
                       />
 
                       {/* Редактирование описания контакта */}
@@ -216,7 +192,9 @@ const PremiumContactsBlockEditor = ({
                       </div>
                       <div
                         className="mb-2 p-2 border rounded bg-gray-50"
-                        dangerouslySetInnerHTML={{ __html: el.description || "Не указано" }}
+                        dangerouslySetInnerHTML={{
+                          __html: el.description || "Не указано",
+                        }}
                       />
 
                       {/* Редактирование ссылки контакта */}
@@ -246,7 +224,7 @@ const PremiumContactsBlockEditor = ({
                         )}
                       </div>
 
-                      {/* Изменение фона элемента */}
+                      {/* Изменение фона элемента (цвет бокса) */}
                       <div className="mb-2">
                         <label className="block text-sm font-medium">
                           Фон элемента:
@@ -255,29 +233,33 @@ const PremiumContactsBlockEditor = ({
                           type="color"
                           value={el.elementColor || "#ffffff"}
                           onChange={(e) =>
-                            onUpdateProjectElement(el.id, "elementColor", e.target.value)
+                            onUpdateProjectElement(
+                              el.id,
+                              "elementColor",
+                              e.target.value
+                            )
                           }
                           className="w-16 h-16 rounded border"
                         />
                       </div>
 
                       {/* Верхние управляющие кнопки для элемента */}
-                      <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
+                      <div className="flex justify-end space-x-2">
                         <button
                           onClick={() => onMoveProjectElementUp(index)}
-                          className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+                          className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
                         >
                           Вверх
                         </button>
                         <button
                           onClick={() => onMoveProjectElementDown(index)}
-                          className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+                          className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
                         >
                           Вниз
                         </button>
                         <button
                           onClick={() => onRemoveProjectElement(el.id)}
-                          className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
                         >
                           Удалить
                         </button>
@@ -286,9 +268,7 @@ const PremiumContactsBlockEditor = ({
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">
-                  Контактные данные отсутствуют.
-                </p>
+                <p className="text-gray-500">Контактные данные отсутствуют.</p>
               )
             ) : (
               <div className="text-center py-2 border rounded bg-gray-100">
@@ -298,28 +278,30 @@ const PremiumContactsBlockEditor = ({
           </div>
 
           {/* Дополнительная панель управления внизу блока */}
-          <div className="flex flex-col sm:flex-row flex-wrap justify-evenly mt-4 border-t pt-4 space-y-2 sm:space-y-0 sm:space-x-2">
+          <div className="flex flex-wrap justify-evenly mt-4 border-t pt-4">
             <button
               onClick={() => onMoveBlockUp(block.id)}
-              className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+              className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm w-full sm:w-auto mb-2 sm:mb-0"
             >
               Вверх
             </button>
             <button
               onClick={() => onMoveBlockDown(block.id)}
-              className="w-full sm:w-auto px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm"
+              className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400 transition text-sm w-full sm:w-auto mb-2 sm:mb-0"
             >
               Вниз
             </button>
             <button
               onClick={() => onRemoveBlock(block.id)}
-              className="w-full sm:w-auto px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm w-full sm:w-auto mb-2 sm:mb-0"
             >
               Удалить
             </button>
             <button
-              onClick={() => onUpdateField(block.id, "collapsed", !block.collapsed)}
-              className="w-full sm:w-auto px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm"
+              onClick={() =>
+                onUpdateField(block.id, "collapsed", !block.collapsed)
+              }
+              className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-sm w-full sm:w-auto"
             >
               {block.collapsed ? "Открыть" : "Закрыть"}
             </button>
@@ -334,4 +316,4 @@ const PremiumContactsBlockEditor = ({
   );
 };
 
-export default PremiumContactsBlockEditor;
+export default ContactsBlockEditor;

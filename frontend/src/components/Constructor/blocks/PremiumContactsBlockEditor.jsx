@@ -42,7 +42,8 @@ const PremiumContactsBlockEditor = ({
         `linear-gradient(to right, ${localGradientStart}, ${localGradientEnd})`
       );
     }
-  }, [localGradientStart, localGradientEnd, block.id, onUpdateField]);
+  }, [localGradientStart, localGradientEnd]);
+
 
   const handleGradientStartChange = (e) => {
     setLocalGradientStart(e.target.value);

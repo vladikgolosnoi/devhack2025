@@ -12,139 +12,143 @@ import AlertMessage from "@/components/ui/AlertMessage";
 import { FaEye, FaCrown } from "react-icons/fa";
 
 // JSON-шаблон для minimalism
-const getDefaultMinimalismData = () => ({
-  pageBackground: "#ffffff",
-  blocks: [
-    {
-      id: 1740855089316,
-      blockType: "home",
-      sectionTitle:
-        '<div><div><div><div><font color="#00aaff">Добро пожаловать!</font></div></div></div></div>',
-      sectionDescription:
-        '<div><div><div><font color="#3297c3"><i>Описание здесь, если нужно.</i></font><div></div></div></div></div>',
-      sectionColor: "#cde2fe",
-      itemStyle: "home",
-      collapsed: true,
-      items: [
-        {
-          id: 1740855089317,
-          title:
-            '<div><div><font size="6" color="#0084ff">Учитель информатики</font></div></div>',
-          description:
-            '<div><div><div><div><div><font size="2" color="#0008ff">Описание слогана и краткая информация.</font></div></div></div></div></div>',
-          image:
-            "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
-          imageAlign: "right",
-        },
-      ],
-    },
-    {
-      id: 1740855141287,
-      blockType: "projects",
-      sectionTitle: "<div>Мои проекты</div>",
-      sectionDescription:
-        "Это мои проекты, который я разрабатывал самостоятельно.",
-      sectionColor: "#ffc2c2",
-      gridColumns: 2,
-      collapsed: true,
-      items: [
-        {
-          id: 1740855141288,
-          title:
-            '<div style="text-align: center;">Python Pro: Полный курс по современному Python</div>',
-          description:
-            "<div>Этот курс рассчитан на разработчиков любого уровня, которые хотят освоить Python с нуля или углубить свои знания. В программе рассматриваются основы языка, ООП, работа с файлами, базы данных, веб-разработка (Flask, Django), асинхронность (asyncio), работа с API и создание телеграм-ботов. Завершается курс созданием собственного проекта – веб-приложения или телеграм-бота с использованием Django и DRF.</div>",
-          image:
-            "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
-          imageAlign: "top",
-          elementColor: "#ffe0e0",
-        },
-        {
-          id: 1740855396399,
-          title:
-            '<div><div style="text-align: center;"><span style="color: rgb(10, 10, 10); background-color: transparent;">Java Pro: От основ до Spring Boot</span></div></div>',
-          description:
-            "<div>Полный курс по Java, охватывающий все ключевые темы: синтаксис, ООП, коллекции, многопоточное программирование, работа с БД (JDBC, Hibernate), создание REST API на Spring Boot. Также в курсе рассматриваются интеграция с фронтендом, деплой на сервер и работа с Docker/Kubernetes. В конце курса студенты разрабатывают реальный проект – веб-приложение на Spring Boot с авторизацией и взаимодействием с базой данных.</div>",
-          image:
-            "https://avatars.mds.yandex.net/i?id=6ecebd0e43e18beacb91905449b50f6b_l-5323018-images-thumbs&n=13",
-          imageAlign: "top",
-          elementColor: "#ffe0e0",
-        },
-      ],
-    },
-    {
-      id: 1740855846666,
-      blockType: "projects",
-      sectionTitle: "<div>Мои награды</div>",
-      sectionDescription: "<br>",
-      sectionColor: "#f5f5f5",
-      gridColumns: 1,
-      collapsed: true,
-      items: [
-        {
-          id: 1740855846667,
-          title:
-            '🏆 <strong data-start="91" data-end="150">Python Pro: Лауреат премии "Лучший курс по Python 2025"</strong>',
-          description:
-            '<p data-start="153" data-end="371">Этот курс был признан лучшим среди образовательных программ по Python в 2025 году! Он разработан для начинающих и продвинутых пользователей, которые хотят освоить Python и создать полноценные проекты.</p><p data-start="373" data-end="700"></p>',
-          image:
-            "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
-          imageAlign: "top",
-          elementColor: "#ffffff",
-        },
-      ],
-    },
-    {
-      id: 1740855842234,
-      blockType: "contacts",
-      sectionTitle: "<div>Мои контакты</div>",
-      sectionDescription:
-        '<div><div>Если у вас есть вопросы, можете писать мне!</div></div>',
-      sectionColor: "#cce9ff",
-      gridColumns: 3,
-      collapsed: true,
-      items: [
-        {
-          id: 1740855842235,
-          title: "Email",
-          description:
-            '<div><div><div><font size="2">Можете написать мне по почте!</font></div></div></div>',
-          link: '<div>mailto:contact@example.com</div>',
-          elementColor: "#d7e8fe",
-        },
-        {
-          id: 1740856055746,
-          title: "Телефон",
-          description: "+7 (123) 456 78-90",
-          link: "",
-          elementColor: "#d7e8fe",
-        },
-        {
-          id: 1740856063689,
-          title: "MAIL.RU",
-          description: "Можете писать в любое время.",
-          link: '<span style="color: rgb(10, 10, 10);">mailto:contact@example.com</span><div></div>',
-          elementColor: "#d7e8fe",
-        },
-      ],
-    },
-    {
-      id: 1740857628612,
-      blockType: "footer",
-      collapsed: true,
-      footerBackground: "#ffffff",
-      gridColumns: 1,
-      textElements: [
-        {
-          id: 1740857628613,
-          text: '<div><div style="text-align: center;"><b>© 2025 Преподаватель Online. Все права защищены.</b></div></div>',
-          collapsed: false,
-          boxColor: "#ffffff",
-        },
-      ],
-    },
-  ],
-});
+const getDefaultMinimalismData = () => {
+  const generateId = () => Date.now() + Math.floor(Math.random() * 1000);
+
+  return {
+    pageBackground: "#ffffff",
+    blocks: [
+      {
+        id: generateId(),
+        blockType: "home",
+        sectionTitle:
+          '<div><div><div><div><font color="#00aaff">Добро пожаловать!</font></div></div></div></div>',
+        sectionDescription:
+          '<div><div><div><font color="#3297c3"><i>Описание здесь, если нужно.</i></font><div></div></div></div></div>',
+        sectionColor: "#cde2fe",
+        itemStyle: "home",
+        collapsed: true,
+        items: [
+          {
+            id: generateId(),
+            title:
+              '<div><div><font size="6" color="#0084ff">Учитель информатики</font></div></div>',
+            description:
+              '<div><div><div><div><div><font size="2" color="#0008ff">Описание слогана и краткая информация.</font></div></div></div></div></div>',
+            image:
+              "https://avatars.dzeninfra.ru/get-zen_doc/230865/pub_5b5032f086603300a9cca63f_5b5033074cfa8b00ab54d1e4/scale_1200",
+            imageAlign: "right",
+          },
+        ],
+      },
+      {
+        id: generateId(),
+        blockType: "projects",
+        sectionTitle: "<div>Мои проекты</div>",
+        sectionDescription:
+          "Это мои проекты, который я разрабатывал самостоятельно.",
+        sectionColor: "#ffc2c2",
+        gridColumns: 2,
+        collapsed: true,
+        items: [
+          {
+            id: generateId(),
+            title:
+              '<div style="text-align: center;">Python Pro: Полный курс по современному Python</div>',
+            description:
+              "<div>Этот курс рассчитан на разработчиков любого уровня, которые хотят освоить Python с нуля или углубить свои знания. В программе рассматриваются основы языка, ООП, работа с файлами, базы данных, веб-разработка (Flask, Django), асинхронность (asyncio), работа с API и создание телеграм-ботов. Завершается курс созданием собственного проекта – веб-приложения или телеграм-бота с использованием Django и DRF.</div>",
+            image:
+              "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
+            imageAlign: "top",
+            elementColor: "#ffe0e0",
+          },
+          {
+            id: generateId(),
+            title:
+              '<div><div style="text-align: center;"><span style="color: rgb(10, 10, 10); background-color: transparent;">Java Pro: От основ до Spring Boot</span></div></div>',
+            description:
+              "<div>Полный курс по Java, охватывающий все ключевые темы: синтаксис, ООП, коллекции, многопоточное программирование, работа с БД (JDBC, Hibernate), создание REST API на Spring Boot. Также в курсе рассматриваются интеграция с фронтендом, деплой на сервер и работа с Docker/Kubernetes. В конце курса студенты разрабатывают реальный проект – веб-приложение на Spring Boot с авторизацией и взаимодействием с базой данных.</div>",
+            image:
+              "https://avatars.mds.yandex.net/i?id=6ecebd0e43e18beacb91905449b50f6b_l-5323018-images-thumbs&n=13",
+            imageAlign: "top",
+            elementColor: "#ffe0e0",
+          },
+        ],
+      },
+      {
+        id: generateId(),
+        blockType: "projects",
+        sectionTitle: "<div>Мои награды</div>",
+        sectionDescription: "<br>",
+        sectionColor: "#f5f5f5",
+        gridColumns: 1,
+        collapsed: true,
+        items: [
+          {
+            id: generateId(),
+            title:
+              '🏆 <strong data-start="91" data-end="150">Python Pro: Лауреат премии "Лучший курс по Python 2025"</strong>',
+            description:
+              '<p data-start="153" data-end="371">Этот курс был признан лучшим среди образовательных программ по Python в 2025 году! Он разработан для начинающих и продвинутых пользователей, которые хотят освоить Python и создать полноценные проекты.</p><p data-start="373" data-end="700"></p>',
+            image:
+              "https://club.1c.ru/upload/iblock/e79/e796dbc83c80b70a894e45c0dbaab1cf.jpg",
+            imageAlign: "top",
+            elementColor: "#ffffff",
+          },
+        ],
+      },
+      {
+        id: generateId(),
+        blockType: "contacts",
+        sectionTitle: "<div>Мои контакты</div>",
+        sectionDescription:
+          "<div><div>Если у вас есть вопросы, можете писать мне!</div></div>",
+        sectionColor: "#cce9ff",
+        gridColumns: 3,
+        collapsed: true,
+        items: [
+          {
+            id: generateId(),
+            title: "Email",
+            description:
+              '<div><div><div><font size="2">Можете написать мне по почте!</font></div></div></div>',
+            link: "<div>mailto:contact@example.com</div>",
+            elementColor: "#d7e8fe",
+          },
+          {
+            id: generateId(),
+            title: "Телефон",
+            description: "+7 (123) 456 78-90",
+            link: "",
+            elementColor: "#d7e8fe",
+          },
+          {
+            id: generateId(),
+            title: "MAIL.RU",
+            description: "Можете писать в любое время.",
+            link: '<span style="color: rgb(10, 10, 10);">mailto:contact@example.com</span><div></div>',
+            elementColor: "#d7e8fe",
+          },
+        ],
+      },
+      {
+        id: generateId(),
+        blockType: "footer",
+        collapsed: true,
+        footerBackground: "#ffffff",
+        gridColumns: 1,
+        textElements: [
+          {
+            id: generateId(),
+            text: '<div><div style="text-align: center;"><b>© 2025 ПреподавательОнлайн. Все права защищены.</b></div></div>',
+            collapsed: false,
+            boxColor: "#ffffff",
+          },
+        ],
+      },
+    ],
+  };
+};
 
 const getDefaultHomeBlock = () => ({
   id: Date.now(),
@@ -406,7 +410,9 @@ export default function Sites() {
               }`}
             >
               <div className="mb-3">
-                <h2 className="text-2xl font-bold text-gray-800">{site.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {site.name}
+                </h2>
                 <p className="text-sm text-gray-500">
                   {`${username}/${site.unique_id}`}
                 </p>

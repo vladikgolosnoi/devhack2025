@@ -35,6 +35,12 @@ const WithNavbar = ({ children }) => {
 };
 
 export default function App() {
+  const excludedPaths = ["/admin", "/swagger", "/api"];
+
+  if (excludedPaths.some((path) => window.location.pathname.startsWith(path))) {
+    return null;
+  }
+
   return (
     <Router>
       <div className="relative min-h-screen">
@@ -79,17 +85,17 @@ export default function App() {
 
           {/* Редактирование конструктора по уникальному идентификатору (тоже только для зарегистрированных) */}
           <Route
-  path="/constructor/:unique_id"
-  element={
-    localStorage.getItem("access_token") ? (
-      <WithNavbar>
-        <Constructor key={window.location.pathname} />
-      </WithNavbar>
-    ) : (
-      <Navigate to="/auth" />
-    )
-  }
-/>
+            path="/constructor/:unique_id"
+            element={
+              localStorage.getItem("access_token") ? (
+                <WithNavbar>
+                  <Constructor key={window.location.pathname} />
+                </WithNavbar>
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
+          />
 
           {/* Маршрут для сайтов (только для зарегистрированных) */}
           <Route
