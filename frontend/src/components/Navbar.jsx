@@ -116,6 +116,8 @@ export default function Navbar() {
       setNotifications((prev) =>
         prev.map((n) => (n.id === notifId ? { ...n, claimed: true } : n))
       );
+      // Обновляем страницу после успешного получения подарка
+      window.location.reload();
     } catch (error) {
       setAlertMessage({
         type: "error",
@@ -251,7 +253,7 @@ export default function Navbar() {
                           <img
                             src={
                               user.avatar
-                                ? `http://localhost:8000${user.avatar}`
+                                ? `${user.avatar}`
                                 : "/default-avatar.png"
                             }
                             alt="Профиль"
@@ -371,7 +373,7 @@ export default function Navbar() {
                           <img
                             src={
                               user.avatar
-                                ? `http://localhost:8000${user.avatar}`
+                                ? `${user.avatar}`
                                 : "/default-avatar.png"
                             }
                             alt="Профиль"
